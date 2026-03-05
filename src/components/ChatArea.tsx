@@ -106,7 +106,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
     ),
     [timeOfDayKey, serverHour, user?.nickname, user?.displayName, user?.email, t],
   );
-  const subtitle = useMemo(() => getGreetingSubtitle(serverHour, t), [timeOfDayKey, serverHour, t]);
+  const subtitle = useMemo(() => getGreetingSubtitle(serverHour, t, !!user), [timeOfDayKey, serverHour, t, !!user]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

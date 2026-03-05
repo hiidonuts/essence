@@ -131,8 +131,6 @@ export const getSmartGreeting = (userName?: string, serverHour?: number, t?: (ke
 export const getGreetingSubtitle = (serverHour?: number, t?: (key: string, options?: any) => string, isLoggedIn?: boolean) => {
   const hour = typeof serverHour === "number" ? serverHour : new Date().getHours();
 
-  // When logged out, skip time-based subtitles entirely.
-  // These nudge sign-in without feeling like a CTA button.
   if (!isLoggedIn) {
     const loggedOutSubtitles = [
       t ? t('chat.subtitle_logged_out_1') : "Sign in to pick up where you left off.",
