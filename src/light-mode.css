@@ -1,0 +1,995 @@
+/* Light Mode Styles - Comprehensive Theme Override */
+
+/* Force all text to black in light mode */
+html:not(.dark) * {
+  color: #000000 !important;
+}
+
+/* Exceptions: Allow white text on colored backgrounds */
+html:not(.dark) .text-white,
+html:not(.dark) .text-slate-100.text-white {
+  color: #ffffff !important;
+}
+
+html:not(.dark) button,
+html:not(.dark) a.button {
+  color: #000000 !important;
+}
+
+html:not(.dark) .message-bubble-user {
+  color: #ffffff !important;
+}
+
+html:not(.dark) .text-red-400 {
+  color: #f87171 !important;
+}
+
+html:not(.dark) .text-green-400 {
+  color: #4ade80 !important;
+}
+
+/* Light mode scroll to bottom button */
+html:not(.dark) button[aria-label="Scroll to bottom"] {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) button[aria-label="Scroll to bottom"]:hover {
+  background-color: #f3f4f6 !important;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12) !important;
+}
+
+html:not(.dark) body,
+html:not(.dark) html {
+  background: #f5f5f5;
+  color: #000000 !important;
+}
+
+html:not(.dark) #root {
+  background: linear-gradient(
+    135deg,
+    #f5f5f5 0%,
+    #ececec 40%,
+    #e8e8e8 70%,
+    #f0f0f0 100%
+  );
+}
+
+/* Light mode scrollbar */
+html:not(.dark) ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: rgba(240, 240, 240, 0.5);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(130, 130, 140, 0.6),
+    rgba(110, 110, 120, 0.5)
+  );
+  border-radius: 4px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(110, 110, 120, 0.8),
+    rgba(90, 90, 100, 0.7)
+  );
+}
+
+/* Glassmorphism - Light Mode */
+html:not(.dark) .glass {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.8) 0%,
+    rgba(235, 235, 235, 0.6) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+html:not(.dark) .glass-dark {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 240, 240, 0.9) 0%,
+    rgba(230, 230, 230, 0.7) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Sidebar - Light Mode */
+html:not(.dark) .sidebar-glass {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 245, 0.98) 0%,
+    rgba(240, 240, 240, 0.98) 100%
+  );
+  border-right: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset -1px 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Cards - Light Mode */
+html:not(.dark) .luxury-card {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.8) 0%,
+    rgba(240, 240, 240, 0.6) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+html:not(.dark) .luxury-card:hover {
+  border-color: rgba(100, 100, 100, 0.3);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Text Colors - Light Mode */
+html:not(.dark) .text-slate-100 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-200 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-300 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-400 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-600 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-700 {
+  color: #000000;
+}
+
+html:not(.dark) .text-slate-800 {
+  color: #000000;
+}
+
+/* Background Colors - Light Mode */
+html:not(.dark) .bg-dark-800 {
+  background-color: #ececec;
+}
+
+html:not(.dark) .bg-dark-900 {
+  background-color: #f5f5f5;
+}
+
+html:not(.dark) .bg-slate-100 {
+  background-color: #f5f5f5;
+}
+
+html:not(.dark) .bg-slate-200 {
+  background-color: #ececec;
+}
+
+html:not(.dark) .bg-slate-300 {
+  background-color: #e0e0e0;
+}
+
+/* Border Colors - Light Mode */
+html:not(.dark) .border-slate-600 {
+  border-color: #a0a0a0;
+}
+
+html:not(.dark) .border-slate-700 {
+  border-color: #b8b8b8;
+}
+
+html:not(.dark) .border-slate-800 {
+  border-color: #d0d0d0;
+}
+
+html:not(.dark) .border-dark-700 {
+  border-color: #d0d0d0;
+}
+
+/* Hover States - Light Mode */
+html:not(.dark) .hover\:text-slate-100:hover {
+  color: #000000;
+}
+
+html:not(.dark) .hover\:text-slate-200:hover {
+  color: #111111;
+}
+
+html:not(.dark) .hover\:text-slate-300:hover {
+  color: #222222;
+}
+
+html:not(.dark) .hover\:bg-slate-700:hover {
+  background-color: #e0e0e0;
+}
+
+html:not(.dark) .hover\:bg-dark-700:hover {
+  background-color: #e0e0e0;
+}
+
+html:not(.dark) .hover\:border-slate-500:hover {
+  border-color: #808080;
+}
+
+/* Input/Textarea - Light Mode */
+html:not(.dark) input[type="text"],
+html:not(.dark) input[type="email"],
+html:not(.dark) input[type="password"],
+html:not(.dark) textarea,
+html:not(.dark) select {
+  background-color: #f5f5f5;
+  color: #000000;
+  border-color: #a0a0a0;
+}
+
+html:not(.dark) input[type="text"]:focus,
+html:not(.dark) input[type="email"]:focus,
+html:not(.dark) input[type="password"]:focus,
+html:not(.dark) textarea:focus,
+html:not(.dark) select:focus {
+  background-color: #ffffff;
+  border-color: #666666;
+  color: #000000;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #808080;
+}
+
+/* Button Colors - Light Mode */
+html:not(.dark) button,
+html:not(.dark) a.button {
+  color: #000000;
+}
+
+html:not(.dark) .bg-blue-600 {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+html:not(.dark) .hover\:bg-blue-700:hover {
+  background-color: #1d4ed8;
+}
+
+/* Modal/Overlay - Light Mode */
+html:not(.dark) .fixed.inset-0.bg-black {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+html:not(.dark) .modal-overlay {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Tooltip - Light Mode */
+html:not(.dark) .tooltip-custom {
+  background: rgba(240, 240, 240, 0.95);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  color: #333333;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Eye Icon - Light Mode */
+html:not(.dark) .eye-icon-container {
+  color: #000000;
+}
+
+html:not(.dark) .eye-blink {
+  fill: #000000;
+}
+
+/* Message Bubbles - Light Mode */
+html:not(.dark) .message-bubble-user {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+html:not(.dark) .message-bubble-assistant {
+  background-color: #e5e7eb;
+  color: #000000;
+}
+
+/* Settings Panel - Light Mode */
+html:not(.dark) .settings-panel {
+  background-color: #f5f5f5;
+  color: #000000;
+}
+
+html:not(.dark) .settings-tab {
+  color: #666666;
+}
+
+html:not(.dark) .settings-tab.active {
+  color: #000000;
+  border-bottom-color: #2563eb;
+}
+
+html:not(.dark) .settings-form-group {
+  color: #000000;
+}
+
+html:not(.dark) .settings-form-group label {
+  color: #333333;
+}
+
+/* Theme Preview Buttons - Light Mode */
+html:not(.dark) .appearance-button {
+  background-color: #ececec;
+  border-color: #a0a0a0;
+  color: #000000;
+}
+
+html:not(.dark) .appearance-button:hover {
+  background-color: #e0e0e0;
+  border-color: #808080;
+}
+
+html:not(.dark) .appearance-button.selected {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+/* Suggestion Cards - Light Mode */
+html:not(.dark) .suggestion-card {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.8) 0%,
+    rgba(240, 240, 240, 0.6) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.15);
+  color: #000000;
+}
+
+html:not(.dark) .suggestion-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(235, 235, 235, 0.9) 0%,
+    rgba(230, 230, 230, 0.7) 100%
+  );
+  border-color: rgba(100, 100, 100, 0.25);
+  color: #000000;
+}
+
+/* Chat Area - Light Mode */
+html:not(.dark) .chat-input-area {
+  background-color: #ffffff;
+  border-color: #000000;
+}
+
+html:not(.dark) .bg-slate-800\/40 {
+  background-color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html:not(.dark) .chat-input {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #000000;
+}
+
+html:not(.dark) textarea {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html:not(.dark) textarea::placeholder {
+  color: #666666 !important;
+}
+
+html:not(.dark) .chat-input:focus {
+  border-color: #000000;
+  background-color: #ffffff;
+}
+
+html:not(.dark) .border-slate-600\/30 {
+  border-color: #000000 !important;
+}
+
+/* Greeting Text - Light Mode */
+html:not(.dark) .greeting-text {
+  color: #000000;
+}
+
+html:not(.dark) .greeting-text-small {
+  color: #666666;
+}
+
+/* Focus Ring - Light Mode */
+html:not(.dark) .focus\:ring-2:focus {
+  --tw-ring-color: rgba(100, 100, 100, 0.3);
+}
+
+/* Dividers - Light Mode */
+html:not(.dark) .border-t,
+html:not(.dark) .border-b,
+html:not(.dark) .border-l,
+html:not(.dark) .border-r {
+  border-color: #d0d0d0;
+}
+
+/* Link Colors - Light Mode */
+html:not(.dark) a {
+  color: #2563eb;
+}
+
+html:not(.dark) a:hover {
+  color: #1d4ed8;
+}
+
+/* Loading Spinner - Light Mode */
+html:not(.dark) .loading-spinner {
+  color: #2563eb;
+}
+
+/* Opacity Variants - Light Mode */
+html:not(.dark) .opacity-50 {
+  opacity: 0.5;
+}
+
+html:not(.dark) .opacity-75 {
+  opacity: 0.75;
+}
+
+/* Additional dark text overrides for modals and specific elements */
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) h6 {
+  color: #000000;
+}
+
+html:not(.dark) p,
+html:not(.dark) span,
+html:not(.dark) div {
+  color: inherit;
+}
+
+html:not(.dark) .uppercase {
+  color: #333333;
+}
+
+html:not(.dark) .tracking-wider {
+  color: inherit;
+}
+
+/* Main backgrounds and text */
+html:not(.dark) {
+  color-scheme: light;
+}
+
+html:not(.dark) body,
+html:not(.dark) html {
+  background: #f8f8f8;
+  color: #1a1a1a;
+}
+
+html:not(.dark) #root {
+  background: linear-gradient(
+    135deg,
+    #f5f5f5 0%,
+    #f0f0f0 40%,
+    #ececec 70%,
+    #f8f8f8 100%
+  );
+}
+
+/* Glass effects */
+html:not(.dark) .glass {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.8) 0%,
+    rgba(235, 235, 235, 0.6) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+html:not(.dark) .glass-dark {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 240, 240, 0.9) 0%,
+    rgba(230, 230, 230, 0.7) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Sidebar */
+html:not(.dark) .sidebar-glass {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 245, 0.98) 0%,
+    rgba(240, 240, 240, 0.98) 100%
+  );
+  border-right: 1px solid rgba(100, 100, 100, 0.15);
+  box-shadow: inset -1px 0 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Cards */
+html:not(.dark) .luxury-card {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 245, 0.8) 0%,
+    rgba(240, 240, 240, 0.6) 100%
+  );
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+html:not(.dark) .luxury-card:hover {
+  border-color: rgba(100, 100, 100, 0.3);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Tooltips */
+html:not(.dark) .tooltip-custom {
+  background: rgba(240, 240, 240, 0.95);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  color: #4b5563;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Text colors */
+html:not(.dark) .text-slate-100 {
+  color: #1a1a1a;
+}
+
+html:not(.dark) .text-slate-200 {
+  color: #333333;
+}
+
+html:not(.dark) .text-slate-300 {
+  color: #4a4a4a;
+}
+
+html:not(.dark) .text-slate-400 {
+  color: #666666;
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #808080;
+}
+
+html:not(.dark) .text-slate-600 {
+  color: #999999;
+}
+
+html:not(.dark) .text-slate-700 {
+  color: #b3b3b3;
+}
+
+/* Placeholder colors */
+html:not(.dark) .placeholder-slate-600 {
+  color: #999999;
+}
+
+html:not(.dark) .placeholder-slate-500 {
+  color: #b0b0b0;
+}
+
+/* Background colors */
+html:not(.dark) .bg-dark-800 {
+  background-color: #ececec;
+}
+
+html:not(.dark) .bg-dark-900 {
+  background-color: #f5f5f5;
+}
+
+html:not(.dark) .bg-slate-700 {
+  background-color: #d0d0d0;
+}
+
+html:not(.dark) .bg-slate-800 {
+  background-color: #b8b8b8;
+}
+
+html:not(.dark) .bg-slate-700\/40 {
+  background-color: rgba(200, 200, 200, 0.4);
+}
+
+html:not(.dark) .bg-slate-800\/40 {
+  background-color: rgba(180, 180, 180, 0.4);
+}
+
+html:not(.dark) .bg-slate-800\/20 {
+  background-color: rgba(200, 200, 200, 0.2);
+}
+
+html:not(.dark) .bg-slate-600\/50 {
+  background-color: rgba(150, 150, 150, 0.5);
+}
+
+/* Border colors */
+html:not(.dark) .border-slate-600 {
+  border-color: #a0a0a0;
+}
+
+html:not(.dark) .border-slate-700 {
+  border-color: #888888;
+}
+
+html:not(.dark) .border-slate-600\/40 {
+  border-color: rgba(120, 120, 120, 0.4);
+}
+
+html:not(.dark) .border-slate-600\/30 {
+  border-color: rgba(120, 120, 120, 0.3);
+}
+
+html:not(.dark) .border-slate-600\/50 {
+  border-color: rgba(120, 120, 120, 0.5);
+}
+
+html:not(.dark) .border-slate-600\/20 {
+  border-color: rgba(120, 120, 120, 0.2);
+}
+
+html:not(.dark) .border-slate-700\/20 {
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+html:not(.dark) .border-slate-700\/30 {
+  border-color: rgba(100, 100, 100, 0.3);
+}
+
+html:not(.dark) .border-slate-700\/10 {
+  border-color: rgba(100, 100, 100, 0.1);
+}
+
+html:not(.dark) .border-black\/40 {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Hover states */
+html:not(.dark) .hover\:bg-slate-700 {
+  color: #666666;
+}
+
+html:not(.dark) .hover\:bg-slate-700\/60:hover {
+  background-color: rgba(200, 200, 200, 0.6);
+}
+
+html:not(.dark) .hover\:bg-slate-800\/40:hover {
+  background-color: rgba(180, 180, 180, 0.4);
+}
+
+html:not(.dark) .hover\:bg-slate-700\/50:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+
+html:not(.dark) .hover\:bg-slate-600\/20:hover {
+  background-color: rgba(150, 150, 150, 0.2);
+}
+
+html:not(.dark) .hover\:bg-slate-600\/40:hover {
+  background-color: rgba(150, 150, 150, 0.4);
+}
+
+html:not(.dark) .hover\:text-slate-200:hover {
+  color: #333333;
+}
+
+html:not(.dark) .hover\:text-slate-300:hover {
+  color: #4a4a4a;
+}
+
+html:not(.dark) .hover\:text-slate-200:hover {
+  color: #333333;
+}
+
+html:not(.dark) .hover\:border-slate-400\/60:hover {
+  border-color: rgba(150, 150, 150, 0.6);
+}
+
+html:not(.dark) .hover\:border-slate-600\/50:hover {
+  border-color: rgba(120, 120, 120, 0.5);
+}
+
+html:not(.dark) .hover\:border-black\/40:hover {
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Ring/focus colors */
+html:not(.dark) .focus\:ring-slate-400\/30:focus {
+  box-shadow: 0 0 0 3px rgba(150, 150, 150, 0.3);
+}
+
+html:not(.dark) .focus\:border-slate-400\/60:focus {
+  border-color: rgba(150, 150, 150, 0.6);
+}
+
+/* Specific component colors */
+html:not(.dark) .bg-red-500\/10 {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+html:not(.dark) .border-red-500\/30 {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+html:not(.dark) .text-red-400 {
+  color: #f87171;
+}
+
+html:not(.dark) .text-green-400 {
+  color: #4ade80;
+}
+
+html:not(.dark) .bg-gradient-to-r {
+  background-image: linear-gradient(to right, #b0b0b0, #999999);
+}
+
+html:not(.dark) .from-slate-600 {
+  --tw-gradient-from: #999999;
+}
+
+html:not(.dark) .to-slate-700 {
+  --tw-gradient-to: #888888;
+}
+
+html:not(.dark) .hover\:from-slate-500:hover {
+  --tw-gradient-from: #b0b0b0;
+}
+
+html:not(.dark) .hover\:to-slate-600:hover {
+  --tw-gradient-to: #999999;
+}
+
+/* Input and textarea styles */
+html:not(.dark) input,
+html:not(.dark) textarea,
+html:not(.dark) select {
+  color: #1a1a1a;
+  background-color: #ececec;
+}
+
+html:not(.dark) input:focus,
+html:not(.dark) textarea:focus,
+html:not(.dark) select:focus {
+  background-color: #f0f0f0;
+  border-color: rgba(120, 120, 120, 0.6);
+}
+
+/* Modal/Overlay */
+html:not(.dark) .bg-black\/60 {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Button colors */
+html:not(.dark) .text-slate-100 {
+  color: #1a1a1a;
+}
+
+html:not(.dark) .text-slate-300 {
+  color: #4a4a4a;
+}
+
+html:not(.dark) .text-slate-400 {
+  color: #666666;
+}
+
+/* Links and interactive elements */
+html:not(.dark) a {
+  color: #4a7c9e;
+}
+
+html:not(.dark) a:hover {
+  color: #2d5a7b;
+}
+
+/* Dividers */
+html:not(.dark) .border-t,
+html:not(.dark) .border-b,
+html:not(.dark) .border-l,
+html:not(.dark) .border-r {
+  border-color: rgba(100, 100, 100, 0.15);
+}
+
+/* Loading spinner and animations */
+html:not(.dark) .animate-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+}
+
+/* Eye icon */
+html:not(.dark) .text-slate-400 {
+  color: #888888;
+}
+
+html:not(.dark) svg {
+  color: inherit;
+}
+
+/* Message bubble styling */
+html:not(.dark) .bg-dark-800\/40 {
+  background-color: rgba(220, 220, 220, 0.4);
+}
+
+html:not(.dark) .text-slate-100 {
+  color: #1a1a1a;
+}
+
+html:not(.dark) .text-slate-200 {
+  color: #333333;
+}
+
+/* Settings panel */
+html:not(.dark) .max-w-6xl {
+  color: #1a1a1a;
+}
+
+/* Suggestion cards */
+html:not(.dark) .cursor-pointer {
+  color: inherit;
+}
+
+/* Input box buttons - Light Mode */
+html:not(.dark) button {
+  color: #000000 !important;
+}
+
+html:not(.dark) button:hover {
+  color: #000000 !important;
+}
+
+html:not(.dark) .text-slate-400 {
+  color: #000000 !important;
+}
+
+html:not(.dark) .hover\:text-slate-200:hover {
+  color: #000000 !important;
+}
+
+html:not(.dark) .hover\:text-slate-100:hover {
+  color: #000000 !important;
+}
+
+html:not(.dark) .text-slate-300 {
+  color: #000000 !important;
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #000000 !important;
+}
+/* Login Modal - Light Mode */
+html:not(.dark) .fixed.inset-0.flex.items-center.justify-center {
+  background: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+html:not(.dark) .fixed.inset-0.flex.items-center.justify-center .luxury-card {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 16px;
+}
+
+/* Personalization Modal - Light Mode */
+html:not(.dark) .fixed.inset-0.flex.items-center.justify-center h2 {
+  color: #000000 !important;
+}
+
+html:not(.dark) .fixed.inset-0.flex.items-center.justify-center select,
+html:not(.dark)
+  .fixed.inset-0.flex.items-center.justify-center
+  input[type="text"],
+html:not(.dark)
+  .fixed.inset-0.flex.items-center.justify-center
+  input[type="email"],
+html:not(.dark)
+  .fixed.inset-0.flex.items-center.justify-center
+  input[type="password"] {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+}
+
+/* Chat Title - Light Mode */
+html:not(.dark) .inline-flex.items-center.gap-2 h3 {
+  color: #000000 !important;
+}
+
+/* Chat title input in light mode */
+html:not(.dark) .inline-flex.items-center.gap-2.bg-dark-800\/30 {
+  background: #f0f0f0 !important;
+}
+
+html:not(.dark) .inline-flex.items-center.gap-2.bg-dark-800\/30 input {
+  color: #000000 !important;
+  border-color: #cccccc !important;
+  background: transparent !important;
+}
+
+/* Scroll to Bottom Button - Light Mode */
+html:not(.dark) button[title="Scroll to bottom"] {
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+html:not(.dark) button[title="Scroll to bottom"]:hover {
+  background: #cbd5e1 !important;
+}
+
+/* Message Edit Mode - Light Mode */
+html:not(.dark) textarea {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #d1d5db !important;
+}
+
+html:not(.dark) textarea:focus {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #9ca3af !important;
+}
+
+/* Message Action Buttons - Light Mode */
+html:not(.dark) button[title="Copy"],
+html:not(.dark) button[title="Edit"],
+html:not(.dark) button[title="Rerun"] {
+  color: #64748b !important;
+}
+
+html:not(.dark) button[title="Copy"]:hover,
+html:not(.dark) button[title="Edit"]:hover,
+html:not(.dark) button[title="Rerun"]:hover {
+  color: #334155 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Dark Mode Scrollbar */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(100, 100, 100, 0.5),
+    rgba(80, 80, 80, 0.4)
+  );
+  border: 2px solid rgba(30, 30, 30, 0.3);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(120, 120, 120, 0.7),
+    rgba(100, 100, 100, 0.6)
+  );
+}
