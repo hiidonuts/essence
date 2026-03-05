@@ -3,6 +3,21 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const router = express.Router();
 
+// Health check route
+router.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Auth server is running',
+    timestamp: new Date().toISOString(),
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID ? 'set' : 'not set',
+      GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID ? 'set' : 'not set',
+      SESSION_SECRET: process.env.SESSION_SECRET ? 'set' : 'not set'
+    }
+  });
+});
+
 const users = {}; // email -> { id, email, name, passwordHash }
 let nextUserId = 1;
 
@@ -29,25 +44,61 @@ router.post('/logout', (req, res) => {
 });
 
 // Google OAuth routes
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect to the app
-    res.redirect('/');
+router.get('/google', (req, res, next) => {
+  console.log('Google OAuth route hit');
+  try {
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  } catch (error) {
+    console.error('Google OAuth error:', error);
+    res.status(500).json({ error: 'Google OAuth failed' });
   }
-);
+});
+
+router.get('/google/callback', (req, res, next) => {
+  console.log('Google OAuth callback hit');
+  passport.authenticate('google', { failureRedirect: '/login' }, (err, user) => {
+    if (err) {
+      console.error('Google callback error:', err);
+      return res.redirect('/login?error=auth_failed');
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error('Google login error:', err);
+        return res.redirect('/login?error=login_failed');
+      }
+      console.log('Google login successful for user:', user.email);
+      res.redirect('/');
+    });
+  })(req, res, next);
+});
 
 // GitHub OAuth routes
-router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
-
-router.get('/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect to the app
-    res.redirect('/');
+router.get('/github', (req, res, next) => {
+  console.log('GitHub OAuth route hit');
+  try {
+    passport.authenticate('github', { scope: ['user:email'] })(req, res, next);
+  } catch (error) {
+    console.error('GitHub OAuth error:', error);
+    res.status(500).json({ error: 'GitHub OAuth failed' });
   }
-);
+});
+
+router.get('/github/callback', (req, res, next) => {
+  console.log('GitHub OAuth callback hit');
+  passport.authenticate('github', { failureRedirect: '/login' }, (err, user) => {
+    if (err) {
+      console.error('GitHub callback error:', err);
+      return res.redirect('/login?error=auth_failed');
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        console.error('GitHub login error:', err);
+        return res.redirect('/login?error=login_failed');
+      }
+      console.log('GitHub login successful for user:', user.email);
+      res.redirect('/');
+    });
+  })(req, res, next);
+});
 
 module.exports = router;
