@@ -53,7 +53,11 @@
     "greeting_pastMidnight_2": "2am energy hits harder",
     "greeting_pastMidnight_3": "{{name}} on graveyard shift",
     "greeting_pastMidnight_4": "Long night. Long focus",
-    "ready_to_help": "Ready to help you explore ideas"
+    "ready_to_help": "Ready to help you explore ideas",
+    "subtitle_logged_out_1": "Sign in to pick up where you left off.",
+    "subtitle_logged_out_2": "Your conversations are waiting.",
+    "subtitle_logged_out_3": "Everything's here. Sign in when you're ready.",
+    "subtitle_logged_out_4": "Continue where you left off."
   },
   "chats": {
     "title": "Chats",
