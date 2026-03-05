@@ -8,15 +8,6 @@ const users = {};
 let nextUserId = 1;
 
 module.exports = function(passport) {
-  // Check if required environment variables are set
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-    console.warn('Google OAuth credentials not found in environment variables');
-  }
-  
-  if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
-    console.warn('GitHub OAuth credentials not found in environment variables');
-  }
-
   passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     const user = users[email];
     if (!user) return done(null, false);
@@ -25,63 +16,63 @@ module.exports = function(passport) {
     return done(null, user);
   }));
 
-  // Only initialize Google OAuth if credentials are available
-  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-    console.log('Initializing Google OAuth strategy');
-    passport.use('google', new GoogleStrategy({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.NODE_ENV === 'production' 
-        ? 'https://essence-silk.vercel.app/api/auth/google/callback'
-        : '/api/auth/google/callback',
-    }, async (accessToken, refreshToken, profile, done) => {
-      console.log('Google OAuth callback received for:', profile.emails?.[0]?.value);
-      let user = Object.values(users).find(u => u.googleId === profile.id);
-      if (!user) {
-        const id = String(nextUserId++);
-        user = {
-          id,
-          googleId: profile.id,
-          name: profile.displayName,
-          email: profile.emails[0].value,
-        };
-        users[user.email] = user;
-        console.log('Created new Google user:', user.email);
-      }
-      return done(null, user);
-    }));
-  } else {
-    console.log('Google OAuth credentials not found, skipping Google strategy');
-  }
+  // Always initialize Google OAuth strategy
+  console.log('Initializing Google OAuth strategy');
+  passport.use('google', new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID || 'dummy-client-id',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'dummy-client-secret',
+    callbackURL: process.env.NODE_ENV === 'production' 
+      ? 'https://essence-silk.vercel.app/api/auth/google/callback'
+      : '/api/auth/google/callback',
+  }, async (accessToken, refreshToken, profile, done) => {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+      return done(new Error('Google OAuth credentials not configured'));
+    }
+    
+    console.log('Google OAuth callback received for:', profile.emails?.[0]?.value);
+    let user = Object.values(users).find(u => u.googleId === profile.id);
+    if (!user) {
+      const id = String(nextUserId++);
+      user = {
+        id,
+        googleId: profile.id,
+        name: profile.displayName,
+        email: profile.emails[0].value,
+      };
+      users[user.email] = user;
+      console.log('Created new Google user:', user.email);
+    }
+    return done(null, user);
+  }));
 
-  // Only initialize GitHub OAuth if credentials are available
-  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
-    console.log('Initializing GitHub OAuth strategy');
-    passport.use('github', new GithubStrategy({
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.NODE_ENV === 'production' 
-        ? 'https://essence-silk.vercel.app/api/auth/github/callback'
-        : '/api/auth/github/callback',
-    }, async (accessToken, refreshToken, profile, done) => {
-      console.log('GitHub OAuth callback received for:', profile.emails?.[0]?.value);
-      let user = Object.values(users).find(u => u.githubId === profile.id);
-      if (!user) {
-        const id = String(nextUserId++);
-        user = {
-          id,
-          githubId: profile.id,
-          name: profile.displayName || profile.username,
-          email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
-        };
-        users[user.email] = user;
-        console.log('Created new GitHub user:', user.email);
-      }
-      return done(null, user);
-    }));
-  } else {
-    console.log('GitHub OAuth credentials not found, skipping GitHub strategy');
-  }
+  // Always initialize GitHub OAuth strategy
+  console.log('Initializing GitHub OAuth strategy');
+  passport.use('github', new GithubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID || 'dummy-client-id',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || 'dummy-client-secret',
+    callbackURL: process.env.NODE_ENV === 'production' 
+      ? 'https://essence-silk.vercel.app/api/auth/github/callback'
+      : '/api/auth/github/callback',
+  }, async (accessToken, refreshToken, profile, done) => {
+    if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+      return done(new Error('GitHub OAuth credentials not configured'));
+    }
+    
+    console.log('GitHub OAuth callback received for:', profile.emails?.[0]?.value);
+    let user = Object.values(users).find(u => u.githubId === profile.id);
+    if (!user) {
+      const id = String(nextUserId++);
+      user = {
+        id,
+        githubId: profile.id,
+        name: profile.displayName || profile.username,
+        email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
+      };
+      users[user.email] = user;
+      console.log('Created new GitHub user:', user.email);
+    }
+    return done(null, user);
+  }));
 
   passport.serializeUser((user, done) => {
     done(null, user.id);
