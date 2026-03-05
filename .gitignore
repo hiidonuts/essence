@@ -35,3 +35,5 @@ verify-*.js
 test-*.js
 start-mongodb-docker.js
 docker-compose.yml
+
+.vercel
