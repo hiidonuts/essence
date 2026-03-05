@@ -18,6 +18,25 @@ router.get('/health', (req, res) => {
   });
 });
 
+// Current user endpoint
+router.get('/current-user', (req, res) => {
+  console.log('Current user check - isAuthenticated:', req.isAuthenticated());
+  console.log('Current user check - session:', req.session);
+  console.log('Current user check - user:', req.user);
+  
+  if (req.isAuthenticated()) {
+    res.json({ 
+      user: req.user,
+      authenticated: true 
+    });
+  } else {
+    res.json({ 
+      user: null,
+      authenticated: false 
+    });
+  }
+});
+
 // Test OAuth strategies
 router.get('/test-strategies', (req, res) => {
   const strategies = passport._strategies;
