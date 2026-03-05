@@ -28,8 +28,10 @@ dist-ssr
 *.md
 *.txt
 test-*.js
+*-test.js
+server-memory.js
 check-*.js
 verify-*.js
-server-memory.js
+test-*.js
 start-mongodb-docker.js
 docker-compose.yml
