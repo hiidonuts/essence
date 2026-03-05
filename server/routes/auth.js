@@ -109,7 +109,8 @@ router.get('/google/callback', (req, res, next) => {
         return res.redirect('/login?error=login_failed');
       }
       console.log('Google login successful for user:', user.email);
-      res.redirect('/');
+      // Redirect with user info for frontend to pick up
+      res.redirect(`/?userId=${user.id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}`);
     });
   })(req, res, next);
 });
@@ -138,7 +139,8 @@ router.get('/github/callback', (req, res, next) => {
         return res.redirect('/login?error=login_failed');
       }
       console.log('GitHub login successful for user:', user.email);
-      res.redirect('/');
+      // Redirect with user info for frontend to pick up
+      res.redirect(`/?userId=${user.id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}`);
     });
   })(req, res, next);
 });
