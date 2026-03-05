@@ -37,17 +37,26 @@ module.exports = function(passport) {
       }
       
       console.log('Google OAuth callback received for:', profile.emails?.[0]?.value);
+      console.log('Google profile data:', JSON.stringify(profile, null, 2));
+      
       let user = Object.values(users).find(u => u.googleId === profile.id);
       if (!user) {
         const id = String(nextUserId++);
         user = {
           id,
           googleId: profile.id,
-          name: profile.displayName,
+          name: profile.displayName || profile.name?.givenName || profile.emails[0].value.split('@')[0],
           email: profile.emails[0].value,
+          profilePicture: profile.photos?.[0]?.value || null,
+          provider: 'google'
         };
         users[user.email] = user;
         console.log('Created new Google user:', user.email);
+      } else {
+        // Update existing user with latest profile data
+        user.name = profile.displayName || user.name;
+        user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
+        console.log('Updated existing Google user:', user.email);
       }
       return done(null, user);
     }));
@@ -74,6 +83,8 @@ module.exports = function(passport) {
       }
       
       console.log('GitHub OAuth callback received for:', profile.emails?.[0]?.value);
+      console.log('GitHub profile data:', JSON.stringify(profile, null, 2));
+      
       let user = Object.values(users).find(u => u.githubId === profile.id);
       if (!user) {
         const id = String(nextUserId++);
@@ -82,9 +93,16 @@ module.exports = function(passport) {
           githubId: profile.id,
           name: profile.displayName || profile.username,
           email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
+          profilePicture: profile.photos?.[0]?.value || null,
+          provider: 'github'
         };
         users[user.email] = user;
         console.log('Created new GitHub user:', user.email);
+      } else {
+        // Update existing user with latest profile data
+        user.name = profile.displayName || profile.username || user.name;
+        user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
+        console.log('Updated existing GitHub user:', user.email);
       }
       return done(null, user);
     }));

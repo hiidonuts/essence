@@ -110,7 +110,14 @@ router.get('/google/callback', (req, res, next) => {
       }
       console.log('Google login successful for user:', user.email);
       // Redirect with user info for frontend to pick up
-      res.redirect(`/?userId=${user.id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}`);
+      const params = new URLSearchParams({
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        profilePicture: user.profilePicture || '',
+        provider: user.provider || 'google'
+      });
+      res.redirect(`/?${params.toString()}`);
     });
   })(req, res, next);
 });
@@ -140,7 +147,14 @@ router.get('/github/callback', (req, res, next) => {
       }
       console.log('GitHub login successful for user:', user.email);
       // Redirect with user info for frontend to pick up
-      res.redirect(`/?userId=${user.id}&email=${encodeURIComponent(user.email)}&name=${encodeURIComponent(user.name)}`);
+      const params = new URLSearchParams({
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        profilePicture: user.profilePicture || '',
+        provider: user.provider || 'github'
+      });
+      res.redirect(`/?${params.toString()}`);
     });
   })(req, res, next);
 });
