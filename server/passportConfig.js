@@ -8,6 +8,15 @@ const users = {};
 let nextUserId = 1;
 
 module.exports = function(passport) {
+  // Check if required environment variables are set
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+    console.warn('Google OAuth credentials not found in environment variables');
+  }
+  
+  if (!process.env.GITHUB_CLIENT_ID || !process.env.GITHUB_CLIENT_SECRET) {
+    console.warn('GitHub OAuth credentials not found in environment variables');
+  }
+
   passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     const user = users[email];
     if (!user) return done(null, false);
@@ -16,7 +25,9 @@ module.exports = function(passport) {
     return done(null, user);
   }));
 
-  passport.use(new GoogleStrategy({
+  // Only initialize Google OAuth if credentials are available
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV === 'production' 
@@ -36,8 +47,11 @@ module.exports = function(passport) {
     }
     return done(null, user);
   }));
+  }
 
-  passport.use(new GithubStrategy({
+  // Only initialize GitHub OAuth if credentials are available
+  if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+    passport.use(new GithubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.NODE_ENV === 'production' 
@@ -57,6 +71,7 @@ module.exports = function(passport) {
     }
     return done(null, user);
   }));
+  }
 
   passport.serializeUser((user, done) => {
     done(null, user.id);

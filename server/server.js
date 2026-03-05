@@ -4,8 +4,12 @@ const passport = require('passport');
 const session = require('express-session');
 require('dotenv').config();
 
-// Initialize Passport
-require('./passportConfig')(passport);
+// Initialize Passport with error handling
+try {
+  require('./passportConfig')(passport);
+} catch (error) {
+  console.error('Passport configuration error:', error);
+}
 
 const app = express();
 app.use(express.json());
