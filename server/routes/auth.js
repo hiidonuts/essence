@@ -18,6 +18,29 @@ router.get('/health', (req, res) => {
   });
 });
 
+// Test OAuth strategies
+router.get('/test-strategies', (req, res) => {
+  const strategies = passport._strategies;
+  const strategyNames = Object.keys(strategies);
+  res.json({
+    message: 'OAuth strategies test',
+    strategies: strategyNames,
+    google: strategyNames.includes('google'),
+    github: strategyNames.includes('github')
+  });
+});
+
+// Simple OAuth test
+router.get('/google-test', (req, res) => {
+  console.log('Google test route hit');
+  res.json({ message: 'Google test route works', redirecting: true });
+});
+
+router.get('/github-test', (req, res) => {
+  console.log('GitHub test route hit');
+  res.json({ message: 'GitHub test route works', redirecting: true });
+});
+
 const users = {}; // email -> { id, email, name, passwordHash }
 let nextUserId = 1;
 
