@@ -4,9 +4,18 @@ const passport = require('passport');
 const session = require('express-session');
 require('dotenv').config();
 
+console.log('Server starting up...');
+console.log('Environment variables check:');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID ? 'set' : 'not set');
+console.log('GITHUB_CLIENT_ID:', process.env.GITHUB_CLIENT_ID ? 'set' : 'not set');
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'set' : 'not set');
+
 // Initialize Passport with error handling
 try {
+  console.log('Loading passport configuration...');
   require('./passportConfig')(passport);
+  console.log('Passport configuration loaded successfully');
 } catch (error) {
   console.error('Passport configuration error:', error);
 }
@@ -36,6 +45,9 @@ app.use(passport.session());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/chats', require('./routes/chats'));
+
+// Debug: Check registered strategies
+console.log('Registered strategies:', Object.keys(passport._strategies || {}));
 
 // Export for Vercel serverless function
 module.exports = app;
