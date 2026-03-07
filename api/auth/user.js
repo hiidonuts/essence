@@ -2,31 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import passport from 'passport';
 import session from 'express-session';
-import mongoose from 'mongoose';
 import 'dotenv/config';
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/essence', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch((err) => {
-  console.error('MongoDB connection error:', err);
-});
-
-// Initialize Passport with error handling
-try {
-  console.log('Loading passport configuration...');
-  import('../../server/passportConfig.js').then(passportConfig => {
-    passportConfig.default(passport);
-    console.log('Passport configuration loaded successfully');
-  }).catch(error => {
-    console.error('Passport configuration error:', error);
-  });
-} catch (error) {
-  console.error('Passport configuration error:', error);
-}
 
 const app = express();
 app.use(express.json());
@@ -50,6 +26,19 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Initialize Passport with error handling
+try {
+  console.log('Loading passport configuration...');
+  import('../../server/passportConfig.js').then(passportConfig => {
+    passportConfig.default(passport);
+    console.log('Passport configuration loaded successfully');
+  }).catch(error => {
+    console.error('Passport configuration error:', error);
+  });
+} catch (error) {
+  console.error('Passport configuration error:', error);
+}
 
 // User endpoint
 app.get('/api/auth/user', (req, res) => {

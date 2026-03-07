@@ -2,17 +2,19 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 const bcrypt = require('bcryptjs');
-const User = require('./models/User');
+
+// In-memory user storage for demo purposes
+const users = {}; // email -> { id, email, name, passwordHash, googleId, githubId, profilePicture, provider }
+let nextUserId = 1;
 
 module.exports = function(passport) {
   console.log('Starting passport configuration...');
   
   passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-      const user = await User.findOne({ email });
-      if (!user) return done(null, false);
-      if (!user.password) return done(null, false); // OAuth users don't have passwords
-      const match = await bcrypt.compare(password, user.password);
+      const user = users[email];
+      if (!user || !user.passwordHash) return done(null, false);
+      const match = await bcrypt.compare(password, user.passwordHash);
       if (!match) return done(null, false);
       return done(null, user);
     } catch (error) {
@@ -42,23 +44,25 @@ module.exports = function(passport) {
       console.log('Google profile data:', JSON.stringify(profile, null, 2));
       
       try {
-        let user = await User.findOne({ googleId: profile.id });
+        let user = Object.values(users).find(u => u.googleId === profile.id);
         if (!user) {
           // Create new user
-          user = new User({
+          const id = String(nextUserId++);
+          const email = profile.emails[0].value;
+          user = {
+            id,
             googleId: profile.id,
-            name: profile.displayName || profile.name?.givenName || profile.emails[0].value.split('@')[0],
-            email: profile.emails[0].value,
+            name: profile.displayName || profile.name?.givenName || email.split('@')[0],
+            email,
             profilePicture: profile.photos?.[0]?.value || null,
             provider: 'google'
-          });
-          await user.save();
+          };
+          users[email] = user;
           console.log('Created new Google user:', user.email);
         } else {
           // Update existing user with latest profile data
           user.name = profile.displayName || user.name;
           user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
-          await user.save();
           console.log('Updated existing Google user:', user.email);
         }
         return done(null, user);
@@ -93,23 +97,25 @@ module.exports = function(passport) {
       console.log('GitHub profile data:', JSON.stringify(profile, null, 2));
       
       try {
-        let user = await User.findOne({ githubId: profile.id });
+        let user = Object.values(users).find(u => u.githubId === profile.id);
         if (!user) {
           // Create new user
-          user = new User({
+          const id = String(nextUserId++);
+          const email = profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`;
+          user = {
+            id,
             githubId: profile.id,
             name: profile.displayName || profile.username,
-            email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
+            email,
             profilePicture: profile.photos?.[0]?.value || null,
             provider: 'github'
-          });
-          await user.save();
+          };
+          users[email] = user;
           console.log('Created new GitHub user:', user.email);
         } else {
           // Update existing user with latest profile data
           user.name = profile.displayName || profile.username || user.name;
           user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
-          await user.save();
           console.log('Updated existing GitHub user:', user.email);
         }
         return done(null, user);
@@ -124,12 +130,12 @@ module.exports = function(passport) {
   }
 
   passport.serializeUser((user, done) => {
-    done(null, user._id);
+    done(null, user.id);
   });
   
-  passport.deserializeUser(async (id, done) => {
+  passport.deserializeUser((id, done) => {
     try {
-      const user = await User.findById(id);
+      const user = Object.values(users).find(u => u.id === id);
       done(null, user);
     } catch (error) {
       done(error, null);
