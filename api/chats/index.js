@@ -11,6 +11,9 @@ app.use(cors({
   credentials: true
 }));
 
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
 function getUserId(req) {
   return req.headers['x-user-id'] || 'anonymous';
 }
@@ -33,17 +36,63 @@ app.post('/api/chats', (req, res) => {
   res.json(thread);
 });
 
-// Add message to chat
-app.post('/api/chats/:threadId/messages', (req, res) => {
-  const userId = getUserId(req);
-  const threads = getThreads();
-  const thread = threads[req.params.threadId];
-  if (!thread) return res.sendStatus(404);
-  if (thread.user !== userId) return res.sendStatus(403);
-  const msg = { id: String(getNextMessageId()), sender: userId, content: req.body.content, timestamp: new Date() };
-  thread.messages.push(msg);
-  thread.updatedAt = new Date();
-  res.json(msg);
+// Add message to chat with AI response
+app.post('/api/chats/:threadId/messages', async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    const threads = getThreads();
+    const thread = threads[req.params.threadId];
+    
+    if (!thread) return res.sendStatus(404);
+    if (thread.user !== userId) return res.sendStatus(403);
+    
+    const userMsg = { id: String(getNextMessageId()), sender: userId, content: req.body.content, timestamp: new Date() };
+    thread.messages.push(userMsg);
+    
+    // Prepare messages for AI API
+    const messagesForAI = thread.messages.map(msg => ({
+      role: msg.sender === userId ? 'user' : 'assistant',
+      content: msg.content
+    }));
+    
+    // Call OpenRouter API
+    const response = await fetch(OPENROUTER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://essence-silk.vercel.app'
+      },
+      body: JSON.stringify({
+        model: 'liquid/lfm-2.5-1.2b-thinking:free',
+        messages: messagesForAI,
+        temperature: 0.7
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('OpenRouter API Error:', data);
+      return res.status(response.status).json({ 
+        error: data.error?.message || 'Error calling AI API'
+      });
+    }
+    
+    const aiResponse = data.choices?.[0]?.message?.content;
+    
+    if (aiResponse) {
+      const aiMsg = { id: String(getNextMessageId()), sender: 'ai', content: aiResponse, timestamp: new Date() };
+      thread.messages.push(aiMsg);
+    }
+    
+    thread.updatedAt = new Date();
+    res.json({ userMessage: userMsg, aiResponse: data });
+    
+  } catch (error) {
+    console.error('Message API error:', error);
+    res.status(500).json({ error: 'Message API error', details: error.message });
+  }
 });
 
 // Get specific chat
