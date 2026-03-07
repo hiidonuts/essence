@@ -37,6 +37,25 @@ router.get('/current-user', (req, res) => {
   }
 });
 
+// User endpoint (alias for current-user)
+router.get('/user', (req, res) => {
+  console.log('User endpoint check - isAuthenticated:', req.isAuthenticated());
+  console.log('User endpoint check - session:', req.session);
+  console.log('User endpoint check - user:', req.user);
+  
+  if (req.isAuthenticated()) {
+    res.json({ 
+      user: req.user,
+      authenticated: true 
+    });
+  } else {
+    res.json({ 
+      user: null,
+      authenticated: false 
+    });
+  }
+});
+
 // Test OAuth strategies
 router.get('/test-strategies', (req, res) => {
   const strategies = passport._strategies;

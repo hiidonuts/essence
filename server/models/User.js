@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 const UserSchema = new mongoose.Schema({
-  email: String,
+  email: { type: String, required: true, unique: true },
   googleId: String,
+  githubId: String,
   password: String,
-  name: String,
+  name: { type: String, required: true },
+  profilePicture: String,
+  provider: String,
+  preferredLanguage: String,
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 module.exports = mongoose.model('User', UserSchema);

@@ -2,20 +2,22 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
 const bcrypt = require('bcryptjs');
-
-// In-memory user storage (same as in auth.js)
-const users = {};
-let nextUserId = 1;
+const User = require('./models/User');
 
 module.exports = function(passport) {
   console.log('Starting passport configuration...');
   
   passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-    const user = users[email];
-    if (!user) return done(null, false);
-    const match = await bcrypt.compare(password, user.passwordHash);
-    if (!match) return done(null, false);
-    return done(null, user);
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return done(null, false);
+      if (!user.password) return done(null, false); // OAuth users don't have passwords
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) return done(null, false);
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
   }));
   console.log('Local strategy registered');
 
@@ -39,26 +41,31 @@ module.exports = function(passport) {
       console.log('Google OAuth callback received for:', profile.emails?.[0]?.value);
       console.log('Google profile data:', JSON.stringify(profile, null, 2));
       
-      let user = Object.values(users).find(u => u.googleId === profile.id);
-      if (!user) {
-        const id = String(nextUserId++);
-        user = {
-          id,
-          googleId: profile.id,
-          name: profile.displayName || profile.name?.givenName || profile.emails[0].value.split('@')[0],
-          email: profile.emails[0].value,
-          profilePicture: profile.photos?.[0]?.value || null,
-          provider: 'google'
-        };
-        users[user.email] = user;
-        console.log('Created new Google user:', user.email);
-      } else {
-        // Update existing user with latest profile data
-        user.name = profile.displayName || user.name;
-        user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
-        console.log('Updated existing Google user:', user.email);
+      try {
+        let user = await User.findOne({ googleId: profile.id });
+        if (!user) {
+          // Create new user
+          user = new User({
+            googleId: profile.id,
+            name: profile.displayName || profile.name?.givenName || profile.emails[0].value.split('@')[0],
+            email: profile.emails[0].value,
+            profilePicture: profile.photos?.[0]?.value || null,
+            provider: 'google'
+          });
+          await user.save();
+          console.log('Created new Google user:', user.email);
+        } else {
+          // Update existing user with latest profile data
+          user.name = profile.displayName || user.name;
+          user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
+          await user.save();
+          console.log('Updated existing Google user:', user.email);
+        }
+        return done(null, user);
+      } catch (error) {
+        console.error('Google OAuth database error:', error);
+        return done(error);
       }
-      return done(null, user);
     }));
     console.log('Google strategy registered successfully');
   } catch (error) {
@@ -85,26 +92,31 @@ module.exports = function(passport) {
       console.log('GitHub OAuth callback received for:', profile.emails?.[0]?.value);
       console.log('GitHub profile data:', JSON.stringify(profile, null, 2));
       
-      let user = Object.values(users).find(u => u.githubId === profile.id);
-      if (!user) {
-        const id = String(nextUserId++);
-        user = {
-          id,
-          githubId: profile.id,
-          name: profile.displayName || profile.username,
-          email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
-          profilePicture: profile.photos?.[0]?.value || null,
-          provider: 'github'
-        };
-        users[user.email] = user;
-        console.log('Created new GitHub user:', user.email);
-      } else {
-        // Update existing user with latest profile data
-        user.name = profile.displayName || profile.username || user.name;
-        user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
-        console.log('Updated existing GitHub user:', user.email);
+      try {
+        let user = await User.findOne({ githubId: profile.id });
+        if (!user) {
+          // Create new user
+          user = new User({
+            githubId: profile.id,
+            name: profile.displayName || profile.username,
+            email: profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.local`,
+            profilePicture: profile.photos?.[0]?.value || null,
+            provider: 'github'
+          });
+          await user.save();
+          console.log('Created new GitHub user:', user.email);
+        } else {
+          // Update existing user with latest profile data
+          user.name = profile.displayName || profile.username || user.name;
+          user.profilePicture = profile.photos?.[0]?.value || user.profilePicture;
+          await user.save();
+          console.log('Updated existing GitHub user:', user.email);
+        }
+        return done(null, user);
+      } catch (error) {
+        console.error('GitHub OAuth database error:', error);
+        return done(error);
       }
-      return done(null, user);
     }));
     console.log('GitHub strategy registered successfully');
   } catch (error) {
@@ -112,11 +124,15 @@ module.exports = function(passport) {
   }
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user._id);
   });
   
-  passport.deserializeUser((id, done) => {
-    const user = Object.values(users).find(u => u.id === id);
-    done(null, user);
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await User.findById(id);
+      done(null, user);
+    } catch (error) {
+      done(error, null);
+    }
   });
 };

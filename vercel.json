@@ -6,6 +6,10 @@
       "use": "@vercel/node"
     },
     {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -14,6 +18,22 @@
     }
   ],
   "routes": [
+    {
+      "src": "/api/auth/user",
+      "dest": "/api/auth/user.js"
+    },
+    {
+      "src": "/api/chats/migrate-legacy",
+      "dest": "/api/chats/migrate-legacy.js"
+    },
+    {
+      "src": "/api/chats/(.*)",
+      "dest": "/api/chats/[id].js"
+    },
+    {
+      "src": "/api/chat",
+      "dest": "/api/chat.js"
+    },
     {
       "src": "/api/(.*)",
       "dest": "server/server.js"

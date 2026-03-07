@@ -15,17 +15,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/essence',
   console.error('MongoDB connection error:', err);
 });
 
-console.log('Server starting up...');
-console.log('Environment variables check:');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID ? 'set' : 'not set');
-console.log('GITHUB_CLIENT_ID:', process.env.GITHUB_CLIENT_ID ? 'set' : 'not set');
-console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'set' : 'not set');
-
 // Initialize Passport with error handling
 try {
   console.log('Loading passport configuration...');
-  require('./passportConfig')(passport);
+  require('../../server/passportConfig')(passport);
   console.log('Passport configuration loaded successfully');
 } catch (error) {
   console.error('Passport configuration error:', error);
@@ -54,13 +47,25 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chats', require('./routes/chats'));
+// User endpoint
+app.get('/api/auth/user', (req, res) => {
+  console.log('User endpoint check - isAuthenticated:', req.isAuthenticated());
+  console.log('User endpoint check - session:', req.session);
+  console.log('User endpoint check - user:', req.user);
+  
+  if (req.isAuthenticated()) {
+    res.json({ 
+      user: req.user,
+      authenticated: true 
+    });
+  } else {
+    res.json({ 
+      user: null,
+      authenticated: false 
+    });
+  }
+});
 
-// Debug: Check registered strategies
-console.log('Registered strategies:', Object.keys(passport._strategies || {}));
-
-// For Vercel serverless functions, we need to export the handler
 module.exports = (req, res) => {
   app(req, res);
 };

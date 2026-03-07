@@ -40,4 +40,10 @@ router.get('/:threadId', (req, res) => {
   res.json(thread);
 });
 
+// Migrate legacy endpoint (placeholder)
+router.post('/migrate-legacy', (req, res) => {
+  // Placeholder for migration logic
+  res.json({ message: 'Migration completed', migrated: 0 });
+});
+
 module.exports = router;
