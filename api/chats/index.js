@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import fetch from 'node-fetch';
 import { getThreads, getNextThreadId, getNextMessageId } from '../shared/data.js';
 
 const app = express();

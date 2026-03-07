@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import fetch from 'node-fetch';
 import { getThreads, getNextThreadId, getNextMessageId } from '../shared/data.js';
 
 const app = express();
@@ -28,16 +29,21 @@ app.get('/api/chat', (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   try {
+    console.log('Chat API called with body:', req.body);
     const { messages, title } = req.body;
     const userId = getUserId(req);
     const id = String(getNextThreadId());
     const threads = getThreads();
     
+    console.log('OPENROUTER_API_KEY:', OPENROUTER_API_KEY ? 'set' : 'not set');
+    
     // If messages are provided, get AI response
     if (messages && messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
+      console.log('Last message:', lastMessage);
       
       // Call OpenRouter API
+      console.log('Calling OpenRouter API...');
       const response = await fetch(OPENROUTER_API_URL, {
         method: 'POST',
         headers: {
@@ -52,7 +58,10 @@ app.post('/api/chat', async (req, res) => {
         })
       });
       
+      console.log('OpenRouter response status:', response.status);
+      
       const data = await response.json();
+      console.log('OpenRouter response data:', data);
       
       if (!response.ok) {
         console.error('OpenRouter API Error:', data);
@@ -62,6 +71,7 @@ app.post('/api/chat', async (req, res) => {
       }
       
       const aiResponse = data.choices?.[0]?.message?.content;
+      console.log('AI Response:', aiResponse);
       
       if (aiResponse) {
         // Create thread with user message and AI response
