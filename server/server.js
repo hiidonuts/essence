@@ -25,8 +25,9 @@ console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'set' : 'not set');
 // Initialize Passport with error handling
 try {
   console.log('Loading passport configuration...');
-  require('./passportConfig')(passport);
+  require('./passportConfig.js')(passport);
   console.log('Passport configuration loaded successfully');
+  console.log('Registered strategies after config:', Object.keys(passport._strategies || {}));
 } catch (error) {
   console.error('Passport configuration error:', error);
 }
@@ -54,8 +55,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/chats', require('./routes/chats'));
+app.use('/api/auth', require('./routes/auth.js'));
+app.use('/api/chats', require('./routes/chats.js'));
 
 // Debug: Check registered strategies
 console.log('Registered strategies:', Object.keys(passport._strategies || {}));
