@@ -27,6 +27,10 @@
       "dest": "/api/chats/migrate-legacy.js"
     },
     {
+      "src": "/api/chats",
+      "dest": "/api/chats/index.js"
+    },
+    {
       "src": "/api/chats/(.*)",
       "dest": "/api/chats/[id].js"
     },
