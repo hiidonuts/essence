@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const passport = require('passport');
-const session = require('express-session');
-const mongoose = require('mongoose');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import passport from 'passport';
+import session from 'express-session';
+import mongoose from 'mongoose';
+import 'dotenv/config';
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/essence', {
@@ -18,8 +18,12 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/essence',
 // Initialize Passport with error handling
 try {
   console.log('Loading passport configuration...');
-  require('../../server/passportConfig')(passport);
-  console.log('Passport configuration loaded successfully');
+  import('../../server/passportConfig.js').then(passportConfig => {
+    passportConfig.default(passport);
+    console.log('Passport configuration loaded successfully');
+  }).catch(error => {
+    console.error('Passport configuration error:', error);
+  });
 } catch (error) {
   console.error('Passport configuration error:', error);
 }
@@ -66,6 +70,6 @@ app.get('/api/auth/user', (req, res) => {
   }
 });
 
-module.exports = (req, res) => {
+export default (req, res) => {
   app(req, res);
 };

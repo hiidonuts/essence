@@ -1,10 +1,10 @@
-const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const GithubStrategy = require('passport-github2').Strategy;
-const bcrypt = require('bcryptjs');
-const User = require('./models/User');
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as GithubStrategy } from 'passport-github2';
+import bcrypt from 'bcryptjs';
+import User from './models/User.js';
 
-module.exports = function(passport) {
+export default function(passport) {
   console.log('Starting passport configuration...');
   
   passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
